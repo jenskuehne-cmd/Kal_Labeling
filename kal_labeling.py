@@ -41,7 +41,7 @@ SCOPES = [
 
 def clean_text_value(value: Any) -> str:
     text = "" if value is None else str(value).strip()
-    return text[1:] if text.startswith("'") else text
+    return text.lstrip("'’\ufeff")
 
 
 def normalize_row(row: list[Any], width: int = 27) -> list[str]:

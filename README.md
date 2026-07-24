@@ -71,7 +71,9 @@ python kal_labeling.py \
 
 ## Text- und Barcode-Sicherheit
 
-Die Werte werden mit `FORMATTED_VALUE` aus Google Sheets gelesen, damit Formelergebnisse und nicht Formeln übertragen werden. Führende Apostrophe werden entfernt. In den XLSX-Dateien wird jede Zielzelle als Text (`@`) formatiert und `quotePrefix=False` gesetzt.
+Die Werte werden mit `FORMATTED_VALUE` aus Google Sheets gelesen, damit Formelergebnisse und nicht Formeln übertragen werden. Führende gerade und typografische Apostrophe werden vollständig entfernt. In den XLSX-Dateien wird jede Zielzelle als Text (`@`) formatiert und `quotePrefix=False` gesetzt.
+
+Nach dem XLSX-Export erstellt die Colab-Version zusätzlich ein ZIP unter `/content/label_exports.zip` und bietet den direkten Colab-Download an. Dadurch kann der Export auch lokal heruntergeladen werden, falls der Google-Drive-Download nicht funktioniert.
 
 ## GitHub
 
