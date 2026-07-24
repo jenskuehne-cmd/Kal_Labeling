@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.env
+credentials*.json
+token*.json
+label_exports/
+.DS_Store
