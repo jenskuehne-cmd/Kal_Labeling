@@ -392,8 +392,15 @@ def main() -> None:
             filename = safe_filename(group_name)
             local_path = args.output_dir / filename
             create_xlsx(template, rows, local_path)
-            link = upload_or_update(drive_api, local_path, filename)
-            print(f"{filename}: {link}")
+            try:
+                link = upload_or_update(drive_api, local_path, filename)
+                print(f"{filename}: {link}")
+            except Exception as exc:
+                print(
+                    f"WARNUNG: {filename} lokal erstellt, "
+                    f"Drive-Upload fehlgeschlagen: {type(exc).__name__}: {exc}"
+                )
+        print(f"Lokale XLSX-Dateien: {args.output_dir.resolve()}")
     else:
         print("Kein XLSX-Export ausgeführt.")
 
