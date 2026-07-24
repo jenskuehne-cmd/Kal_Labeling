@@ -118,6 +118,12 @@ def build_label_rows(rows: list[list[str]]) -> list[list[str]]:
     return result
 
 
+def build_target_rows(group_name: str, rows: list[list[str]]) -> list[list[str]]:
+    """Ergänzt jede Liste um den Reiternamen am Anfang und am Ende."""
+    marker = [clean_text_value(group_name), "", "", "", "", ""]
+    return [marker] + build_label_rows(rows) + [marker.copy()]
+
+
 def load_template(template_path: Path) -> dict[str, Any]:
     from openpyxl import load_workbook
 
@@ -161,7 +167,7 @@ def load_template(template_path: Path) -> dict[str, Any]:
     return snapshot
 
 
-def create_xlsx(template: dict[str, Any], rows: list[list[str]], output_path: Path) -> None:
+def create_xlsx(template: dict[str, Any], group_name: str, rows: list[list[str]], output_path: Path) -> None:
     from openpyxl import Workbook
 
     workbook = Workbook()
@@ -191,7 +197,7 @@ def create_xlsx(template: dict[str, Any], rows: list[list[str]], output_path: Pa
             cell = worksheet.cell(row=r, column=c, value=clean_text_value(value))
             apply_style(r, c, cell)
 
-    label_rows = build_label_rows(rows)
+    label_rows = build_target_rows(group_name, rows)
     for r, label_row in enumerate(label_rows, start=3):
         if template["heights"][3] is not None:
             worksheet.row_dimensions[r].height = template["heights"][3]
@@ -255,7 +261,7 @@ def create_master(
                 "properties": {
                     "title": group_to_tab[group_name],
                     "gridProperties": {
-                        "rowCount": max(100, 2 + len(rows) * 3),
+                        "rowCount": max(100, 4 + len(rows) * 3),
                         "columnCount": 6,
                         "frozenRowCount": 2,
                     },
@@ -273,7 +279,7 @@ def create_master(
     for group_name, rows in groups.items():
         tab = group_to_tab[group_name]
         sheet_id = title_to_id[tab]
-        values = template_headers + build_label_rows(rows)
+        values = template_headers + build_target_rows(group_name, rows)
         write_values(sheets_api, MASTER_SPREADSHEET_ID, tab, values)
         last_row = len(values)
         requests = [
@@ -391,7 +397,7 @@ def main() -> None:
         for group_name, rows in groups.items():
             filename = safe_filename(group_name)
             local_path = args.output_dir / filename
-            create_xlsx(template, rows, local_path)
+            create_xlsx(template, group_name, rows, local_path)
             try:
                 link = upload_or_update(drive_api, local_path, filename)
                 print(f"{filename}: {link}")
