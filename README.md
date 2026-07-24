@@ -4,7 +4,7 @@ Dieses Projekt erzeugt die Master-Target-Reiter und optional die Drucker-XLSX-Da
 
 Enthalten sind:
 
-- `Labeldruck_Master_Target_Colab_V4.ipynb`: Colab-Version 4
+- `Labeldruck_Master_Target_Colab_V5.ipynb`: Colab-Version 5 (Shared-Drive-Unterstützung)
 - `kal_labeling.py`: terminalfähige Python-Version
 - `Vorlage Importdatei.xlsx`: lokale XLSX-Vorlage
 - `KAL Print_File_Master - Muster.csv`: Beispiel für die gewünschte Spaltenstruktur
@@ -25,7 +25,7 @@ Jeder Master-Reiter und jede erzeugte XLSX-Liste beginnt nach den zwei Kopfzeile
 
 ## Colab
 
-1. `Labeldruck_Master_Target_Colab_V4.ipynb` in Google Colab hochladen.
+1. `Labeldruck_Master_Target_Colab_V5.ipynb` in Google Colab hochladen.
 2. **Runtime → Run all** ausführen.
 3. Bei der Abfrage die `Vorlage Importdatei.xlsx` hochladen.
 4. Google-Zugriff erlauben.

@@ -346,12 +346,12 @@ def upload_or_update(drive_api, local_path: Path, filename: str) -> str:
     from googleapiclient.http import MediaFileUpload
 
     query = f"'{TARGET_DRIVE_FOLDER_ID}' in parents and name = '{filename.replace(chr(39), chr(92) + chr(39))}' and trashed = false"
-    existing = drive_api.files().list(q=query, spaces="drive", fields="files(id)", pageSize=10).execute().get("files", [])
+    existing = drive_api.files().list(q=query, spaces="drive", includeItemsFromAllDrives=True, supportsAllDrives=True, fields="files(id)", pageSize=10).execute().get("files", [])
     media = MediaFileUpload(str(local_path), mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", resumable=True)
     if existing:
-        result = drive_api.files().update(fileId=existing[0]["id"], body={"name": filename}, media_body=media, fields="webViewLink").execute()
+        result = drive_api.files().update(fileId=existing[0]["id"], body={"name": filename}, media_body=media, supportsAllDrives=True, fields="webViewLink").execute()
         return result.get("webViewLink", f"https://drive.google.com/open?id={existing[0]['id']}")
-    result = drive_api.files().create(body={"name": filename, "parents": [TARGET_DRIVE_FOLDER_ID]}, media_body=media, fields="webViewLink").execute()
+    result = drive_api.files().create(body={"name": filename, "parents": [TARGET_DRIVE_FOLDER_ID]}, media_body=media, supportsAllDrives=True, fields="webViewLink").execute()
     return result.get("webViewLink", f"https://drive.google.com/open?id={result['id']}")
 
 
