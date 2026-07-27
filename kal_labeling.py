@@ -103,7 +103,7 @@ def rgb(hex_color: str) -> dict[str, float]:
     }
 
 
-def build_label_rows(rows: list[list[str]]) -> list[list[str]]:
+def build_label_rows(rows: list[list[str]], group_name: str = "") -> list[list[str]]:
     result = []
     for row in rows:
         description = clean_text_value(row[COL_DESCRIPTION])
@@ -113,7 +113,7 @@ def build_label_rows(rows: list[list[str]]) -> list[list[str]]:
         result.extend([
             [eqm_number, "", description, "", "", ""],
             [new_flo, "", description, "", "", ""],
-            [asset_id, "", "", "", "", ""],
+            [asset_id, "", clean_text_value(group_name), "", "", ""],
         ])
     return result
 
@@ -121,7 +121,7 @@ def build_label_rows(rows: list[list[str]]) -> list[list[str]]:
 def build_target_rows(group_name: str, rows: list[list[str]]) -> list[list[str]]:
     """Ergänzt jede Liste um den Reiternamen am Anfang und am Ende."""
     marker = [clean_text_value(group_name), "", "", "", "", ""]
-    return [marker] + build_label_rows(rows) + [marker.copy()]
+    return [marker] + build_label_rows(rows, group_name) + [marker.copy()]
 
 
 def load_template(template_path: Path) -> dict[str, Any]:
